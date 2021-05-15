@@ -1,4 +1,4 @@
-# Manage Kubernetes resources using Terraform
+Manage Kubernetes resources using Terraform
 
 * [Prerequisites](#prerequisites)
 * [Quick Start](#quick-start)
@@ -17,7 +17,7 @@
         * [Curl / path](#curl--path)
         * [Curl /dog path](#curl-dog-path)
         * [Curl host](#curl-host)
-    * [PVC test](#pvc-test)
+    * [Persistent Volume Claim test](#persistent-volume-claim-test)
         * [Verify PV](#verify-pv)
         * [Verify PVC](#verify-pvc)
         * [Check PV Host Path](#check-pv-host-path)
