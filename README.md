@@ -43,7 +43,7 @@ microk8s enable storage
   apply -auto-approve
   ```
 
-
+<br/>
 
 #### Test ClusterIP service
 
