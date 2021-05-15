@@ -247,7 +247,7 @@ Manage Kubernetes resources using Terraform
 
 - ##### Grafana URL
 
-  [monitoring.microk8s.test](http://prometheus.microk8s.test)
+  [monitoring.microk8s.test](http://monitoring.microk8s.test)
 
 - ##### Prometheus URL
 
