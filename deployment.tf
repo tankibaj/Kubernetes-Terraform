@@ -8,7 +8,7 @@ resource "kubernetes_deployment" "whoami" {
   }
 
   spec {
-    replicas = 3
+    replicas = 2
     selector {
       match_labels = {
         App = "whoami"
@@ -24,6 +24,44 @@ resource "kubernetes_deployment" "whoami" {
         container {
           image = "thenaim/whoami"
           name  = "whoami-container"
+
+          port {
+            container_port = 80
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+resource "kubernetes_deployment" "httpinfo" {
+  metadata {
+    name      = "httpinfo"
+    namespace = kubernetes_namespace.workspace.metadata.0.name
+    labels = {
+      App = "httpinfo"
+    }
+  }
+
+  spec {
+    replicas = 3
+    selector {
+      match_labels = {
+        App = "httpinfo"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          App = "httpinfo"
+        }
+      }
+      spec {
+        container {
+          image = "thenaim/httpinfo"
+          name  = "httpinfo-container"
 
           port {
             container_port = 80
