@@ -1,6 +1,8 @@
 # Manage Kubernetes resources using Terraform
 
-<br/>
+[TOC]
+
+``<br/>
 
 ## Prerequisites
 
@@ -60,8 +62,8 @@ SSH into MicroK8s node and run:
 - Verify ingress
 
   ```bash
-  kubectl get ingress -n workspace
-
+  ❯ kubectl get ingress -n workspace
+  
   # Output
   NAME     CLASS    HOSTS   ADDRESS     PORTS   AGE
   whoami   <none>   *       127.0.0.1   80      37s
@@ -69,7 +71,7 @@ SSH into MicroK8s node and run:
 - Curl `/` path
 
   ```bash
-  curl 192.168.0.16
+  ❯ curl 192.168.0.16
 
   # Output
   Hostname: whoami-55697b469f-9slbk
@@ -94,7 +96,7 @@ SSH into MicroK8s node and run:
 - Curl `/dog` path
 
   ```bash
-  curl 192.168.0.16/dog
+  ❯ curl 192.168.0.16/dog
 
   # Output
   PAGE: serving DOG
@@ -113,8 +115,8 @@ SSH into MicroK8s node and run:
 - Curl host
 
   ```bash
-  curl microk8s.test/cat
-
+  ❯ curl microk8s.test/cat
+  
   # Output
   PAGE: serving CAT
   HOST NAME: httpinfo-56fc4cbfcd-rwrbq
@@ -146,8 +148,8 @@ SSH into MicroK8s node and run:
 - Verify PVC
 
   ```bash
-  kubectl get pvc -n workspace
-
+  ❯ kubectl get pvc -n workspace
+  
   # Output
   NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS        AGE
   nginx-pv-claim   Bound    pvc-aa06b811-44c5-47ec-bb35-a4b311922c77   1Gi        RWO            microk8s-hostpath   33m
@@ -161,13 +163,12 @@ SSH into MicroK8s node and run:
   ```
   
   ```bash
-  kubectl describe -n kube-system pod $HOST_PATH | grep PV_DIR
+  ❯ kubectl describe -n kube-system pod $HOST_PATH | grep PV_DIR
 
   # Output
   PV_DIR:     /var/snap/microk8s/common/default-storage
   ```
 
-  
 - Pod name environment variable
 
   ```bash
@@ -182,12 +183,11 @@ SSH into MicroK8s node and run:
   kubectl -n workspace exec $POD_NAME -- sh -c 'echo "Hello MicroK8s!!!" > /usr/share/nginx/html/index.html'
   ```
 
-  
 - Curl pvc host
 
   ```bash
-  curl pvc.microk8s.test
-
+  ❯ curl pvc.microk8s.test
+  
   # Output
   Hello MicroK8s!!!
   ```
