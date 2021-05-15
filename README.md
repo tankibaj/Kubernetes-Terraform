@@ -1,29 +1,26 @@
 # Manage Kubernetes resources using Terraform
 
-Table of Contents
-=================
-
 * [Prerequisites](#prerequisites)
 * [Quick Start](#quick-start)
     * [Enable MicroK8s Addons](#enable-microk8s-addons)
-      * [Enable Ingress](#enable-ingress)
-      * [Enable PV](#enable-pv)
+        * [Enable Ingress](#enable-ingress)
+        * [Enable PV](#enable-pv)
     * [Provision infrastructure](#provision-infrastructure)
-      * [Prepare your working directory for other terrafrom commands\.](#prepare-your-working-directory-for-other-terrafrom-commands)
-      * [Show changes required by the current configuration\.](#show-changes-required-by-the-current-configuration)
-      * [Create infrastructure\.](#create-infrastructure)
+        * [Prepare your working directory for other terrafrom commands](#prepare-your-working-directory-for-other-terrafrom-commands)
+        * [Show changes required by the current configuration](#show-changes-required-by-the-current-configuration)
+        * [Create infrastructure](#create-infrastructure)
     * [Test Ingress](#test-ingress)
-      * [Verify ingress](#verify-ingress)
-      * [Curl / path](#curl--path)
-      * [Curl /dog path](#curl-dog-path)
-      * [Curl host](#curl-host)
+        * [Verify ingress](#verify-ingress)
+        * [Curl / path](#curl--path)
+        * [Curl /dog path](#curl-dog-path)
+        * [Curl host](#curl-host)
     * [Test PVC](#test-pvc)
-      * [Verify PV](#verify-pv)
-      * [Verify PVC](#verify-pvc)
-      * [Check PV Host Path](#check-pv-host-path)
-      * [Pod name environment variable](#pod-name-environment-variable)
-      * [Create a index\.html file in the mounted PVC](#create-a-indexhtml-file-in-the-mounted-pvc)
-      * [Curl pvc host](#curl-pvc-host)
+        * [Verify PV](#verify-pv)
+        * [Verify PVC](#verify-pvc)
+        * [Check PV Host Path](#check-pv-host-path)
+        * [Pod name environment variable](#pod-name-environment-variable)
+        * [Create a index\.html file in the mounted PVC](#create-a-indexhtml-file-in-the-mounted-pvc)
+        * [Curl pvc host](#curl-pvc-host)
 
 <br/>
 
@@ -39,17 +36,17 @@ Table of Contents
 
 ### Enable MicroK8s Addons
 
-##### Enable Ingress
+- ##### Enable Ingress
 
-SSH into MicroK8s node and run:
+  SSH into MicroK8s node and run:
 
   ```bash
   microk8s enable ingress
   ```
 
-##### Enable PV
+- ##### Enable PV
 
-SSH into MicroK8s node and run:
+  SSH into MicroK8s node and run:
 
   ```bash
   microk8s enable storage
@@ -57,21 +54,21 @@ SSH into MicroK8s node and run:
 
 <br/>
 
-### Provision `infrastructure`
+### Provision infrastructure
 
-##### Prepare your working directory for other terrafrom commands.
+- ##### Prepare your working directory for other terrafrom commands
 
   ```
   terraform init
   ```
 
-##### Show changes required by the current configuration.
+- ##### Show changes required by the current configuration
 
   ```
   terraform plan
   ```
 
-##### Create infrastructure.
+- ##### Create infrastructure
 
   ```
   apply -auto-approve
@@ -82,7 +79,7 @@ SSH into MicroK8s node and run:
 
 ### Test Ingress
 
-##### Verify ingress
+- ##### Verify ingress
 
   ```bash
   ❯ kubectl get ingress -n workspace
@@ -91,7 +88,7 @@ SSH into MicroK8s node and run:
   NAME     CLASS    HOSTS   ADDRESS     PORTS   AGE
   whoami   <none>   *       127.0.0.1   80      37s
   ```
-##### Curl `/` path
+- ##### Curl `/` path
 
   ```bash
   ❯ curl 192.168.0.16
@@ -116,7 +113,7 @@ SSH into MicroK8s node and run:
   X-Scheme: http
   ```
 
-##### Curl `/dog` path
+- ##### Curl `/dog` path
 
   ```bash
   ❯ curl 192.168.0.16/dog
@@ -135,7 +132,7 @@ SSH into MicroK8s node and run:
   HTTP_ACCEPT: */*
   ```
 
-##### Curl host
+- ##### Curl host
 
   ```bash
   ❯ curl microk8s.test/cat
@@ -158,7 +155,7 @@ SSH into MicroK8s node and run:
 
 ### Test PVC
 
-##### Verify PV
+- ##### Verify PV
 
   ```bash
   ❯ kubectl get pv
@@ -168,7 +165,7 @@ SSH into MicroK8s node and run:
   pvc-aa06b811-44c5-47ec-bb35-a4b311922c77   1Gi        RWO            Delete           Bound    workspace/nginx-pv-claim   microk8s-hostpath            50m
   ```
 
-##### Verify PVC
+- ##### Verify PVC
 
   ```bash
   ❯ kubectl get pvc -n workspace
@@ -179,7 +176,7 @@ SSH into MicroK8s node and run:
   ```
 
 
-##### Check PV Host Path
+- ##### Check PV Host Path
 
   ```bash
   HOST_PATH=$(kubectl get pods -l k8s-app=hostpath-provisioner -o jsonpath="{.items[0].metadata.name}" -n kube-system)
@@ -192,7 +189,7 @@ SSH into MicroK8s node and run:
   PV_DIR:     /var/snap/microk8s/common/default-storage
   ```
 
-##### Pod name environment variable
+- ##### Pod name environment variable
 
   ```bash
   POD_NAME=$(kubectl get pod -l App=nginx-pvc-test -o jsonpath="{.items[0].metadata.name}" -n workspace)
@@ -200,13 +197,13 @@ SSH into MicroK8s node and run:
 
   
 
-##### Create a `index.html` file in the mounted PVC
+- ##### Create a `index.html` file in the mounted PVC
 
   ```bash
   kubectl -n workspace exec $POD_NAME -- sh -c 'echo "Hello MicroK8s!!!" > /usr/share/nginx/html/index.html'
   ```
 
-##### Curl pvc host
+- ##### Curl pvc host
 
   ```bash
   ❯ curl pvc.microk8s.test
