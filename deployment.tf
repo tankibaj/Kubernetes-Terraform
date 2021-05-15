@@ -1,6 +1,6 @@
 resource "kubernetes_deployment" "whoami" {
   metadata {
-    name = "whoami"
+    name      = "whoami"
     namespace = kubernetes_namespace.workspace.metadata.0.name
     labels = {
       App = "whoami"
@@ -32,5 +32,5 @@ resource "kubernetes_deployment" "whoami" {
       }
     }
   }
-  
+
 }
