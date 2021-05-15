@@ -20,3 +20,5 @@ override.tf.json
 
 # ignore kube config file
 kubeconfig*
+
+plan.md
