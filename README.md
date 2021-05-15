@@ -12,6 +12,17 @@
 
 ## Quick Start
 
+
+#### Enable PV storage
+
+SSH into MicroK8s node and run:
+
+```bash
+microk8s enable storage
+```
+
+<br/>
+
 #### Provision infrastructure
 
 - Prepare your working directory for other terrafrom commands.
@@ -37,17 +48,33 @@
 #### Test ClusterIP service
 
 ```bash
-❯ kubectl get service -o wide -n workspace
-# Output sample
-NAME     TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
-whoami   NodePort   10.152.183.14   <none>        80:30201/TCP   18m   App=whoami
+❯ kubectl get ingress -n workspace
+
+# Output Sample
+NAME     CLASS    HOSTS   ADDRESS     PORTS   AGE
+whoami   <none>   *       127.0.0.1   80      37s
 ```
 
 ```bash
-❯ curl 192.168.0.16:30201
+❯ curl 192.168.0.16
 
-
-NAME     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
-whoami   ClusterIP   10.152.183.14   <none>        80/TCP    15m   App=whoami
+# Output Sample
+Hostname: whoami-55697b469f-9slbk
+IP: 127.0.0.1
+IP: ::1
+IP: 10.1.128.215
+IP: fe80::d05d:68ff:fee1:4ead
+RemoteAddr: 10.1.128.204:37730
+GET / HTTP/1.1
+Host: 192.168.0.16
+User-Agent: curl/7.64.1
+Accept: */*
+X-Forwarded-For: 192.168.0.9
+X-Forwarded-Host: 192.168.0.16
+X-Forwarded-Port: 80
+X-Forwarded-Proto: http
+X-Real-Ip: 192.168.0.9
+X-Request-Id: 8352a0d04446e596ccb0acbb2c86883b
+X-Scheme: http
 ```
 
