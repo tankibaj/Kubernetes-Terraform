@@ -1,6 +1,15 @@
-# Manage Kubernetes resources using Terraform
+Manage Kubernetes resources using Terraform
 
-[TOC]
+Table of Contents
+=================
+
+* [Prerequisites](#prerequisites)
+* [Quick Start](#quick-start)
+    * [Enable Ingress](#enable-ingress)
+    * [Enable Storage](#enable-storage)
+    * [Provision infrastructure](#provision-infrastructure)
+    * [Test Ingress](#test-ingress)
+    * [Test PVC](#test-pvc)
 
 <br/>
 
