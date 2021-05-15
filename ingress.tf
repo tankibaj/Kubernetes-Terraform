@@ -1,3 +1,6 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/
+# https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types
+
 resource "kubernetes_ingress" "ingress" {
   metadata {
     name      = "whoami"

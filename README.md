@@ -45,7 +45,7 @@ microk8s enable ingress
 
 <br/>
 
-#### Test `Ingress`
+#### Test Ingress
 
 ```bash
 ❯ kubectl get ingress -n workspace
