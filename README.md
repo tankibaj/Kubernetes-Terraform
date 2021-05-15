@@ -2,6 +2,9 @@
 
 * [Prerequisites](#prerequisites)
 * [Quick Start](#quick-start)
+    * [Config host](#config-host)
+        * [Open host file](#open-host-file)
+        * [Add following lines to host file](#add-following-lines-to-host-file)
     * [Enable MicroK8s Addons](#enable-microk8s-addons)
         * [Enable Ingress](#enable-ingress)
         * [Enable PV](#enable-pv)
@@ -9,18 +12,21 @@
         * [Prepare your working directory for other terrafrom commands](#prepare-your-working-directory-for-other-terrafrom-commands)
         * [Show changes required by the current configuration](#show-changes-required-by-the-current-configuration)
         * [Create infrastructure](#create-infrastructure)
-    * [Test Ingress](#test-ingress)
+    * [Ingress test](#ingress-test)
         * [Verify ingress](#verify-ingress)
         * [Curl / path](#curl--path)
         * [Curl /dog path](#curl-dog-path)
         * [Curl host](#curl-host)
-    * [Test PVC](#test-pvc)
+    * [PVC test](#pvc-test)
         * [Verify PV](#verify-pv)
         * [Verify PVC](#verify-pvc)
         * [Check PV Host Path](#check-pv-host-path)
         * [Pod name environment variable](#pod-name-environment-variable)
         * [Create a index\.html file in the mounted PVC](#create-a-indexhtml-file-in-the-mounted-pvc)
         * [Curl pvc host](#curl-pvc-host)
+    * [Monitoring test](#monitoring-test)
+        * [Grafana URL](#grafana-url)
+        * [Prometheus URL](#prometheus-url)
 
 <br/>
 
@@ -30,9 +36,31 @@
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Terraform](https://www.terraform.io/downloads.html)
 
+
 <br/>
 
 # Quick Start
+
+### Config host
+
+- ##### Open host file
+
+  ```bash
+  vim /etc/hosts
+  ```
+
+- ##### Add following lines to host file
+
+  ```text
+  <your_microk8s_ip>    microk8s.test
+  <your_microk8s_ip>    pvc.microk8s.test
+  <your_microk8s_ip>    monitoring.microk8s.test
+  <your_microk8s_ip>    prometheus.microk8s.test
+  ```
+  
+  > In my case MicroK8S node IP is `192.168.0.16`
+
+<br/>
 
 ### Enable MicroK8s Addons
 
@@ -77,7 +105,7 @@
 <br/>
 
 
-### Test Ingress
+### Ingress test 
 
 - ##### Verify ingress
 
@@ -91,43 +119,43 @@
 - ##### Curl `/` path
 
   ```bash
-  ❯ curl 192.168.0.16
+  ❯ curl -H 'Host: microk8s.test' 192.168.0.16
 
   # Output
-  Hostname: whoami-55697b469f-9slbk
+  Hostname: whoami-55697b469f-p4xwr
   IP: 127.0.0.1
   IP: ::1
-  IP: 10.1.128.215
-  IP: fe80::d05d:68ff:fee1:4ead
-  RemoteAddr: 10.1.128.204:43310
+  IP: 10.1.128.229
+  IP: fe80::ecce:d0ff:fe86:90df
+  RemoteAddr: 10.1.128.204:55110
   GET / HTTP/1.1
-  Host: 192.168.0.16
+  Host: microk8s.test
   User-Agent: curl/7.64.1
   Accept: */*
   X-Forwarded-For: 192.168.0.9
-  X-Forwarded-Host: 192.168.0.16
+  X-Forwarded-Host: microk8s.test
   X-Forwarded-Port: 80
   X-Forwarded-Proto: http
   X-Real-Ip: 192.168.0.9
-  X-Request-Id: af140612331666beb914fd93752e29e0
+  X-Request-Id: e4eea796b18efb0a1198344e9fc892c9
   X-Scheme: http
   ```
 
 - ##### Curl `/dog` path
 
   ```bash
-  ❯ curl 192.168.0.16/dog
+  ❯ curl -H 'Host: microk8s.test' 192.168.0.16/dog
 
   # Output
   PAGE: serving DOG
-  HOST NAME: httpinfo-56fc4cbfcd-7r5tk
-  HOST IP: 10.1.128.219
+  HOST NAME: httpinfo-56fc4cbfcd-b9ppv
+  HOST IP: 10.1.128.220
   REMOTE IP: 10.1.128.204
   SERVER PORT: 80
-  REMOTE_PORT: 60648
+  REMOTE_PORT: 59414
   PROTOCOL: HTTP/1.1
   USER AGENT: curl/7.64.1
-  REQUEST TIME: 1621044126
+  REQUEST TIME: 1621106397
   REQUEST URI: /dog
   HTTP_ACCEPT: */*
   ```
@@ -135,7 +163,7 @@
 - ##### Curl host
 
   ```bash
-  ❯ curl microk8s.test/cat
+  ❯ curl -H 'Host: microk8s.test' 192.168.0.16/cat
   
   # Output
   PAGE: serving CAT
@@ -153,7 +181,7 @@
 
 <br/>
 
-### Test PVC
+### Persistent Volume Claim test
 
 - ##### Verify PV
 
@@ -206,10 +234,22 @@
 - ##### Curl pvc host
 
   ```bash
-  ❯ curl pvc.microk8s.test
+  ❯ curl -H 'Host: pvc.microk8s.test' 192.168.0.16
   
   # Output
   Hello MicroK8s!!!
   ```
 
-  
+
+<br/>
+
+### Monitoring test
+
+- ##### Grafana URL
+
+  [monitoring.microk8s.test](prometheus.microk8s.test)
+
+- ##### Prometheus URL
+
+  [prometheus.microk8s.test](prometheus.microk8s.test)   
+

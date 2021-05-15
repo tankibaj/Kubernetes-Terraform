@@ -3,7 +3,7 @@
 
 resource "kubernetes_ingress" "ingress" {
   metadata {
-    name      = "whoami"
+    name      = "workspace"
     namespace = kubernetes_namespace.workspace.metadata.0.name
     annotations = {
       "kubernetes.io/ingress.class" = "public"
@@ -17,6 +17,7 @@ resource "kubernetes_ingress" "ingress" {
     }
 
     rule {
+      host = "microk8s.test"
       http {
 
         path {
@@ -35,12 +36,6 @@ resource "kubernetes_ingress" "ingress" {
           }
         }
 
-      }
-    }
-
-    rule {
-      host = "microk8s.test"
-      http {
         path {
           path = "/cat"
           backend {
@@ -48,6 +43,7 @@ resource "kubernetes_ingress" "ingress" {
             service_port = 80
           }
         }
+
       }
     }
 
@@ -58,6 +54,47 @@ resource "kubernetes_ingress" "ingress" {
           path = "/"
           backend {
             service_name = kubernetes_service.pvc_test.metadata.0.name
+            service_port = 80
+          }
+        }
+      }
+    }
+
+  }
+}
+
+
+
+resource "kubernetes_ingress" "monitoring" {
+  metadata {
+    name      = "monitoring"
+    namespace = var.namespace_monitoring
+    annotations = {
+      "kubernetes.io/ingress.class" = "public"
+    }
+  }
+  spec {
+
+    rule {
+      host = "prometheus.microk8s.test"
+      http {
+        path {
+          path = "/"
+          backend {
+            service_name = "prometheus-server"
+            service_port = 80
+          }
+        }
+      }
+    }
+
+    rule {
+      host = "monitoring.microk8s.test"
+      http {
+        path {
+          path = "/"
+          backend {
+            service_name = "grafana"
             service_port = 80
           }
         }
