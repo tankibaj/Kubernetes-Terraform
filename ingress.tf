@@ -41,7 +41,6 @@ resource "kubernetes_ingress" "ingress" {
     rule {
       host = "microk8s.test"
       http {
-
         path {
           path = "/cat"
           backend {
@@ -49,7 +48,19 @@ resource "kubernetes_ingress" "ingress" {
             service_port = 80
           }
         }
+      }
+    }
 
+    rule {
+      host = "pvc.microk8s.test"
+      http {
+        path {
+          path = "/"
+          backend {
+            service_name = kubernetes_service.pvc_test.metadata.0.name
+            service_port = 80
+          }
+        }
       }
     }
 
