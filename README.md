@@ -37,7 +37,17 @@
 #### Test NodePort service
 
 ```bash
+❯ kubectl get service -o wide -n workspace
+
+
+# Output sample
+NAME     TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+whoami   NodePort   10.152.183.14   <none>        80:30201/TCP   18m   App=whoami
+```
+
+```bash
 ❯ curl 192.168.0.16:30201
+
 
 # Output sample
 Hostname: whoami-55697b469f-9slbk
