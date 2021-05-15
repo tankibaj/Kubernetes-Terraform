@@ -34,21 +34,13 @@
 
 
 
-#### Test NodePort service
+#### Test ClusterIP service
 
 ```bash
-❯ curl 192.168.0.16:30201
+❯ kubectl get service -o wide -n workspace
 
 # Output sample
-Hostname: whoami-55697b469f-9slbk
-IP: 127.0.0.1
-IP: ::1
-IP: 10.1.128.215
-IP: fe80::d05d:68ff:fee1:4ead
-RemoteAddr: 192.168.0.16:49284
-GET / HTTP/1.1
-Host: 192.168.0.16:30201
-User-Agent: curl/7.64.1
-Accept: */*
+NAME     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+whoami   ClusterIP   10.152.183.14   <none>        80/TCP    15m   App=whoami
 ```
 
