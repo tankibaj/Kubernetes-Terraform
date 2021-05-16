@@ -41,3 +41,21 @@ resource "helm_release" "grafana" {
     data.template_file.grafana_values.rendered
   ]
 }
+
+resource "helm_release" "nfs_client_provisioner" {
+  chart      = "nfs-client-provisioner"
+  name       = "nfs-client-provisioner"
+  repository = "https://ckotzbauer.github.io/helm-charts"
+  namespace  = "kube-system"
+
+  set {
+    name  = "nfs.server"
+    value = "192.168.0.100"
+  }
+
+  set {
+    name  = "nfs.path"
+    value = "/home/naim/nfs"
+  }
+
+}

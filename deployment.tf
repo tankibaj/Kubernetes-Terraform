@@ -35,7 +35,6 @@ resource "kubernetes_deployment" "whoami" {
 
 }
 
-
 resource "kubernetes_deployment" "httpinfo" {
   metadata {
     name      = "httpinfo"
@@ -73,12 +72,12 @@ resource "kubernetes_deployment" "httpinfo" {
 
 }
 
-resource "kubernetes_deployment" "pvc_test" {
+resource "kubernetes_deployment" "hostpath_pvc_test" {
   metadata {
-    name      = "nginx-pvc-test"
+    name      = "hostpath-pvc-test"
     namespace = kubernetes_namespace.workspace.metadata.0.name
     labels = {
-      App = "nginx-pvc-test"
+      App = "hostpath-pvc-test"
     }
   }
 
@@ -86,19 +85,19 @@ resource "kubernetes_deployment" "pvc_test" {
     replicas = 1
     selector {
       match_labels = {
-        App = "nginx-pvc-test"
+        App = "hostpath-pvc-test"
       }
     }
     template {
       metadata {
         labels = {
-          App = "nginx-pvc-test"
+          App = "hostpath-pvc-test"
         }
       }
       spec {
         container {
           image = "nginx"
-          name  = "nginx-pvc-test-container"
+          name  = "hostpath-pvc-test-container"
 
           port {
             container_port = 80
@@ -111,7 +110,54 @@ resource "kubernetes_deployment" "pvc_test" {
         volume {
           name = "nginx-volume"
           persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim.nginx_pv_claim.metadata.0.name
+            claim_name = kubernetes_persistent_volume_claim.hostpath_pvc.metadata.0.name
+          }
+        }
+      }
+    }
+  }
+
+}
+
+resource "kubernetes_deployment" "nfs_pvc_test" {
+  metadata {
+    name      = "nfs-pvc-test"
+    namespace = kubernetes_namespace.workspace.metadata.0.name
+    labels = {
+      App = "nfs-pvc-test"
+    }
+  }
+
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        App = "nfs-pvc-test"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          App = "nfs-pvc-test"
+        }
+      }
+      spec {
+        container {
+          image = "nginx"
+          name  = "nfs-pvc-test-container"
+
+          port {
+            container_port = 80
+          }
+          volume_mount {
+            name       = "nfs-volume"
+            mount_path = "/usr/share/nginx/html"
+          }
+        }
+        volume {
+          name = "nfs-volume"
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim.nfs_pvc.metadata.0.name
           }
         }
       }

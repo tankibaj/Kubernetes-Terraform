@@ -48,12 +48,25 @@ resource "kubernetes_ingress" "ingress" {
     }
 
     rule {
-      host = "pvc.microk8s.test"
+      host = "hostpath.microk8s.test"
       http {
         path {
           path = "/"
           backend {
-            service_name = kubernetes_service.pvc_test.metadata.0.name
+            service_name = kubernetes_service.hostpath_pvc_test.metadata.0.name
+            service_port = 80
+          }
+        }
+      }
+    }
+
+    rule {
+      host = "nfs.microk8s.test"
+      http {
+        path {
+          path = "/"
+          backend {
+            service_name = kubernetes_service.nfs_pvc_test.metadata.0.name
             service_port = 80
           }
         }
@@ -62,8 +75,6 @@ resource "kubernetes_ingress" "ingress" {
 
   }
 }
-
-
 
 resource "kubernetes_ingress" "monitoring" {
   metadata {
